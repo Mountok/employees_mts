@@ -15,6 +15,7 @@ type Server struct {
 
 func (s *Server) Run(handler http.Handler) error {
 	s.httpServer = &http.Server{
+		// Addr: ":" + "8080",
 		Addr: ":" + os.Getenv("PORT"),
 		Handler: handler,
 		MaxHeaderBytes: 1 << 20,

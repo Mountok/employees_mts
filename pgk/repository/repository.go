@@ -11,6 +11,7 @@ type Authorization interface {
 }
 
 type Employees interface {
+	ReadEmployer(models.EmployersResponse) (models.EmployersResponse,error)
 }
 
 type Repository struct {
@@ -20,4 +21,5 @@ type Repository struct {
 
 func NewRepository(db *sqlx.DB) *Repository { return &Repository{
 	Authorization: NewAuthPostgres(db),
+	Employees: NewEmployeesPostgres(db),
 } }
