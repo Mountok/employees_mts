@@ -1,0 +1,9 @@
+# postgresql://postgres:JRgzSEuNdowNsPgIPwdDjZKfdSXTtMig@junction.proxy.rlwy.net:30799/railway
+db:
+  username: "postgres"
+  host: "junction.proxy.rlwy.net"
+  port: "30799"
+  dbname: "railway"
+  sslmode: "require"
+
+
