@@ -1,8 +1,5 @@
 package models
 
-type EmployersMapResponse struct {
-	EmployersResponse
-}
 
 type EmployersResponse struct {
 	Id           int    `json:"id" db:"id"`
@@ -11,7 +8,7 @@ type EmployersResponse struct {
 	Position     string `json:"position" db:"position"`
 	DepartmentId int    `json:"department_id" db:"department_id"`
 	ManagerId    int    `json:"manager_id" db:"manager_id"`
-	Children     []Employers
+	Children     []EmployersResponse
 }
 
 type Employers struct {
