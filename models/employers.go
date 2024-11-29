@@ -8,7 +8,7 @@ type EmployersResponse struct {
 	Position     string `json:"position" db:"position"`
 	DepartmentId int    `json:"department_id" db:"department_id"`
 	ManagerId    int    `json:"manager_id" db:"manager_id"`
-	Children     []EmployersResponse
+	Children     []EmployersResponse `json:"children"`
 }
 
 type Employers struct {
