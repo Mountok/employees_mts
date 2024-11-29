@@ -3,7 +3,6 @@ package restapi
 import (
 	"context"
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -13,8 +12,8 @@ type Server struct {
 
 func (s *Server) Run(handler http.Handler) error {
 	s.httpServer = &http.Server{
-		// Addr: ":" + "8080",
-		Addr: ":" + os.Getenv("PORT"),
+		Addr: ":" + "8080",
+		// Addr: ":" + os.Getenv("PORT"),
 		Handler: handler,
 		MaxHeaderBytes: 1 << 20,
 		ReadTimeout: 10 * time.Second,

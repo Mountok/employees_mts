@@ -18,7 +18,7 @@ func NewEmployeesService(repo repository.Employees) *EmployeesService {
 	}
 }
 
-func (s *EmployeesService) ReadEmployer(input models.Employers) (models.EmployersResponse, error) {
+func (s *EmployeesService) ReadEmployer(input models.Employers) ([]models.EmployersResponse, error) {
 	var attributesJSON map[string]string
 	err := json.Unmarshal([]byte(input.Attributes), &attributesJSON)
 	if err != nil {

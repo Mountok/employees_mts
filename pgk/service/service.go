@@ -10,7 +10,7 @@ type Authorization interface{
 }
 
 type Employees interface{
-	ReadEmployer(models.Employers) (models.EmployersResponse,error)
+	ReadEmployer(models.Employers) ([]models.EmployersResponse,error)
 }
 
 type Service struct {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"rest_api_learn/models"
+	"slices"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
@@ -19,9 +20,9 @@ func NewEmployeesPostgres(db *sqlx.DB) *EmployeesPostgres {
 	}
 }
 
-func (db *EmployeesPostgres) ReadEmployer(input models.EmployersResponse) (models.EmployersResponse, error) {
+func (db *EmployeesPostgres) ReadEmployer(input models.EmployersResponse) ([]models.EmployersResponse, error) {
 	var output []models.Employers
-	var outputArray [][]models.Employers
+	var outputArray []models.EmployersResponse
 	var queryString string
 	for key := range input.Attributes {
 		queryString += fmt.Sprintf("and extra_info ->> '%s' = '%s'", key, input.Attributes[key])
@@ -35,10 +36,23 @@ func (db *EmployeesPostgres) ReadEmployer(input models.EmployersResponse) (model
 
 	err := db.db.Select(&output, fmt.Sprintf("SELECT id, name, position, department_id, manager_id, extra_info FROM employees WHERE 1=1 %s LIMIT 1", queryString))
 	if err != nil {
-		return models.EmployersResponse{}, err
+		return []models.EmployersResponse{}, err
 	} else {
 		fmt.Println(output)
-		outputArray = append(outputArray, output)
+		var attributesJSON map[string]string
+		err = json.Unmarshal([]byte(output[0].Attributes), &attributesJSON)
+		if err != nil {
+			logrus.Errorf("error unmarsjaling json: %s", err)
+			return []models.EmployersResponse{}, nil
+		}
+		outputArray = append(outputArray, models.EmployersResponse{
+			Id:           output[0].Id,
+			Name:         output[0].Name,
+			Position:     output[0].Position,
+			DepartmentId: output[0].DepartmentId,
+			ManagerId:    output[0].ManagerId,
+			Attributes:   attributesJSON,
+		})
 	}
 
 	var isSearch = true
@@ -48,66 +62,31 @@ func (db *EmployeesPostgres) ReadEmployer(input models.EmployersResponse) (model
 			output = []models.Employers{}
 			err := db.db.Select(&output, fmt.Sprintf("SELECT id, name, position, department_id, manager_id, extra_info FROM employees WHERE id = %d", lastId))
 			if err != nil {
-				return models.EmployersResponse{}, err
+				return []models.EmployersResponse{}, err
 			}
 			if output[0].ManagerId == 0 {
 				isSearch = false
 			}
-			outputArray = append(outputArray, output)
+			var attributesJSON map[string]string
+			err = json.Unmarshal([]byte(output[0].Attributes), &attributesJSON)
+			if err != nil {
+				logrus.Errorf("error unmarsjaling json: %s", err)
+				return []models.EmployersResponse{}, nil
+			}
+			outputArray = append(outputArray, models.EmployersResponse{
+				Id:           output[0].Id,
+				Name:         output[0].Name,
+				Position:     output[0].Position,
+				DepartmentId: output[0].DepartmentId,
+				ManagerId:    output[0].ManagerId,
+				Attributes:   attributesJSON,
+			})
 			fmt.Println(outputArray)
 			lastId = output[0].ManagerId
 		}
 	}
 
-	if len(outputArray) == 1 {
-		var attributesJSON map[string]string
-		err := json.Unmarshal([]byte(outputArray[0][0].Attributes), &attributesJSON)
-		if err != nil {
-			logrus.Errorf("error unmarsjaling json: %s", err)
-			return models.EmployersResponse{}, nil
-		}
-		return models.EmployersResponse{
-			Id:           outputArray[0][0].Id,
-			Name:         outputArray[0][0].Name,
-			Position:     outputArray[0][0].Position,
-			DepartmentId: outputArray[0][0].DepartmentId,
-			ManagerId:    outputArray[0][0].ManagerId,
-			Attributes:   attributesJSON,
-		}, nil
-	} else {
-		var arrayLen = len(outputArray)
-		var attributesJSON map[string]string
-		err := json.Unmarshal([]byte(outputArray[0][0].Attributes), &attributesJSON)
-		if err != nil {
-			logrus.Errorf("error unmarsjaling json: %s", err)
-			return models.EmployersResponse{}, nil
-		}
-		var result = models.EmployersResponse{
-			Id:           outputArray[arrayLen-1][0].Id,
-			Name:         outputArray[arrayLen-1][0].Name,
-			Position:     outputArray[arrayLen-1][0].Position,
-			DepartmentId: outputArray[arrayLen-1][0].DepartmentId,
-			ManagerId:    outputArray[arrayLen-1][0].ManagerId,
-			Attributes:   attributesJSON,
-		}
+	slices.Reverse(outputArray)
 
-		logrus.Info(result)
-		for i := 0; i <= arrayLen-2; i++ {
-			var mainBranch = models.EmployersResponse{
-				Id:           outputArray[i][0].Id,
-				Name:         outputArray[i][0].Name,
-				Position:     outputArray[i][0].Position,
-				DepartmentId: outputArray[i][0].DepartmentId,
-				ManagerId:    outputArray[i][0].ManagerId,
-			}
-			result.Children = append(result.Children,mainBranch)
-			
-			fmt.Println(mainBranch)
-
-			fmt.Println(i)
-			
-		}
-		return result, nil
-	}
-
+	return outputArray, nil
 }
