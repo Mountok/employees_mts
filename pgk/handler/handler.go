@@ -26,8 +26,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	}
 	api := router.Group("/api")
 	{
-		api.POST("/employers", h.CreateEmployer)
-		api.GET("/employers", h.ReadEmployer)
+		api.POST("/employer", h.CreateEmployer)
+		api.POST("/employers", h.ReadEmployer)
 		api.PUT("/employers", h.UpadateEmployer)
 		api.DELETE("/employers", h.DeleteEmployer)
 	}
