@@ -13,9 +13,14 @@ type Employees interface{
 	ReadEmployer(models.Employers) ([]models.EmployersResponse,error)
 }
 
+type Filters interface{
+	ReadAllFiltersDate() (models.FiltersResponse,error)
+}
+
 type Service struct {
 	Authorization
 	Employees
+	Filters
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -23,5 +28,6 @@ func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
 		Employees: NewEmployeesService(repos.Employees),
+		Filters: NewFilterService(repos.Filters),
 	}
 }

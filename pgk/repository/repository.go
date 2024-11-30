@@ -14,12 +14,18 @@ type Employees interface {
 	ReadEmployer(models.EmployersResponse) ([]models.EmployersResponse,error)
 }
 
+type Filters interface {
+	ReadAllFiltersDate() (models.FiltersResponse,error)
+}
+
 type Repository struct {
 	Authorization
 	Employees
+	Filters
 }
 
 func NewRepository(db *sqlx.DB) *Repository { return &Repository{
 	Authorization: NewAuthPostgres(db),
 	Employees: NewEmployeesPostgres(db),
+	Filters: NewFilterPostgres(db),
 } }

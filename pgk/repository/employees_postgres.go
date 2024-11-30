@@ -24,8 +24,26 @@ func (db *EmployeesPostgres) ReadEmployer(input models.EmployersResponse) ([]mod
 	var outputArray []models.EmployersResponse
 	var queryString string
 
-	if input.FullName != "" {
+	if input.FullName != "" && input.FullName != " " {
 		queryString += fmt.Sprint(" and LOWER(emp.full_name) LIKE LOWER('%"+ input.FullName+"%')")
+	}
+	if input.DepartmentId != "" {
+		queryString += fmt.Sprintf(" and emp.departments_id = %s", input.DepartmentId)
+	}
+	if input.JobId != "" {
+		queryString += fmt.Sprintf(" and emp.job_title_id = %s", input.JobId)
+	}
+	if input.RoleId != "" {
+		queryString += fmt.Sprintf(" and emp.role_id = %s", input.RoleId)
+	}
+	if input.BlockId != "" {
+		queryString += fmt.Sprintf(" and emp.block_id = %s", input.BlockId)
+	}
+	if input.SubDivisionId != "" {
+		queryString += fmt.Sprintf(" and emp.subdivision_id = %s", input.SubDivisionId)
+	}
+	if input.Office != "" {
+		queryString += fmt.Sprintf(" and emp.office_id = %s", input.Office)
 	}
 
 	logrus.Printf(queryString)

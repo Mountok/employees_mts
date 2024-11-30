@@ -30,6 +30,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.POST("/employers", h.ReadEmployer)
 		api.PUT("/employers", h.UpadateEmployer)
 		api.DELETE("/employers", h.DeleteEmployer)
+		api.GET("/filters", h.ReadAllFiltersDate)
 	}
 
 	return router
