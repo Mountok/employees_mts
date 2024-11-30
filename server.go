@@ -18,7 +18,9 @@ func (s *Server) Run(handler http.Handler) error {
 		// Addr: ":" + "8080",
 		Addr: ":" + os.Getenv("PORT"),
 		Handler: handlers.CORS(
-			handlers.AllowedOrigins([]string{"*"}),
+			handlers.AllowedOrigins([]string{
+				"*",
+			}),
 			handlers.AllowedMethods([]string{
 				"POST",
 				"GET",
@@ -26,8 +28,11 @@ func (s *Server) Run(handler http.Handler) error {
 				"DELETE",
 			}),
 			handlers.AllowedHeaders([]string{
-				"*",
+				"Accept", 
+     "Content-Type","Content-Length", "Accept-Encoding","X-CSRF-Token", 
+     "Authorization","Auth",
 			}),
+			handlers.AllowCredentials(),
 		)(handler),
 		MaxHeaderBytes: 1 << 20,
 		ReadTimeout:    10 * time.Second,
