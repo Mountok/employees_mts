@@ -31,7 +31,7 @@ func (db *EmployeesPostgres) ReadEmployer(input models.EmployersResponse) ([]mod
 	logrus.Printf(queryString)
 
 	err := db.db.Select(&output, fmt.Sprintf(
-		`SELECT emp.id, emp.full_name, emp.number, emp.adres, job.job_name,rl.role_name, emp.parent_id, dep.department_name, blk.block_name, subd.subdivision_name, offic.office_name FROM main.employees emp 
+		`SELECT emp.id, emp.full_name, emp.number, emp.adres,emp.citi, job.job_name,rl.role_name, emp.parent_id, dep.department_name, blk.block_name, subd.subdivision_name, offic.office_name FROM main.employees emp 
 			INNER JOIN main.role rl  ON  rl.id = emp.role_id
 				INNER JOIN main.job_title job  ON job.id = emp.job_title_id
 					INNER JOIN main.departments dep  ON dep.id = emp.departments_id
@@ -65,7 +65,7 @@ func (db *EmployeesPostgres) ReadEmployer(input models.EmployersResponse) ([]mod
 		for isSearch {
 			output = []models.Employers{}
 			err := db.db.Select(&output, fmt.Sprintf(
-				`SELECT emp.id, emp.full_name, emp.number, emp.adres, job.job_name,rl.role_name, emp.parent_id, dep.department_name, blk.block_name, subd.subdivision_name, offic.office_name FROM main.employees emp 
+				`SELECT emp.id, emp.full_name, emp.number, emp.adres, emp.citi, job.job_name,rl.role_name, emp.parent_id, dep.department_name, blk.block_name, subd.subdivision_name, offic.office_name FROM main.employees emp 
 						INNER JOIN main.role rl  ON  rl.id = emp.role_id
 							INNER JOIN main.job_title job  ON job.id = emp.job_title_id
 								INNER JOIN main.departments dep  ON dep.id = emp.departments_id
