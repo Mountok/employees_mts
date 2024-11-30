@@ -1,11 +1,9 @@
 package service
 
 import (
-	"encoding/json"
 	"rest_api_learn/models"
 	"rest_api_learn/pgk/repository"
 
-	"github.com/sirupsen/logrus"
 )
 
 type EmployeesService struct {
@@ -19,19 +17,17 @@ func NewEmployeesService(repo repository.Employees) *EmployeesService {
 }
 
 func (s *EmployeesService) ReadEmployer(input models.Employers) ([]models.EmployersResponse, error) {
-	var attributesJSON map[string]string
-	err := json.Unmarshal([]byte(input.Attributes), &attributesJSON)
-	if err != nil {
-		logrus.Errorf("error unmarsjaling json: %s", err)
-	}
-	logrus.Info(attributesJSON)
-
 	return s.repo.ReadEmployer(models.EmployersResponse{
-		Id:           input.Id,
-		Name:         input.Name,
-		Attributes:   attributesJSON,
-		Position:     input.Position,
-		DepartmentId: input.DepartmentId,
-		ManagerId:    input.ManagerId,
+		Id:            input.Id,
+		FullName:      input.FullName,
+		Number:        input.Number,
+		Address:       input.Address,
+		City:          input.City,
+		JobId:         input.JobId,
+		RoleId:        input.RoleId,
+		ParentId:      input.ParentId,
+		DepartmentId:  input.DepartmentId,
+		BlockId:       input.BlockId,
+		SubDivisionId: input.SubDivisionId,
 	})
 }
