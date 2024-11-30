@@ -25,16 +25,27 @@ func (db *EmployeesPostgres) ReadEmployer(input models.EmployersResponse) ([]mod
 	var outputArray []models.EmployersResponse
 	var queryString string
 	for key := range input.Attributes {
-		queryString += fmt.Sprintf("and extra_info ->> '%s' = '%s'", key, input.Attributes[key])
+		queryString += fmt.Sprintf("and extra_info ->> '%s' = '%s' ", key, input.Attributes[key])
 	}
 
 	if input.DepartmentId != 0 {
-		queryString += fmt.Sprintf("and department_id=%d", input.DepartmentId)
+		queryString += fmt.Sprintf("and emp.department_id=%d ", input.DepartmentId)
+	}
+	if input.ManagerId != 0 {
+		queryString += fmt.Sprintf("and emp.manager_id=%d ", input.ManagerId)
+	}
+	if input.Name != "" {
+		queryString += fmt.Sprintf("and emp.name LIKE '%s%s%' ", "%", input.Name)
+	}
+	if input.Position != "" {
+		queryString += fmt.Sprintf("and emp.position='%s' ", "%", input.Position)
 	}
 
 	logrus.Printf(queryString)
 
-	err := db.db.Select(&output, fmt.Sprintf("SELECT id, name, position, department_id, manager_id, extra_info FROM employees WHERE 1=1 %s LIMIT 1", queryString))
+	err := db.db.Select(&output, fmt.Sprintf(
+		"SELECT emp.id,emp.name, ps.position, emp.department_id, emp.manager_id, emp.extra_info  FROM employees emp JOIN positions ps ON ps.id = emp.position WHERE 1=1 %s LIMIT 1", 
+		queryString))
 	if err != nil {
 		return []models.EmployersResponse{}, err
 	} else {
@@ -60,7 +71,7 @@ func (db *EmployeesPostgres) ReadEmployer(input models.EmployersResponse) ([]mod
 		var lastId = output[0].ManagerId
 		for isSearch {
 			output = []models.Employers{}
-			err := db.db.Select(&output, fmt.Sprintf("SELECT id, name, position, department_id, manager_id, extra_info FROM employees WHERE id = %d", lastId))
+			err := db.db.Select(&output, fmt.Sprintf("SELECT emp.id,emp.name, ps.position, emp.department_id, emp.manager_id, emp.extra_info  FROM employees emp JOIN positions ps ON ps.id = emp.position WHERE emp.id = %d", lastId))
 			if err != nil {
 				return []models.EmployersResponse{}, err
 			}
