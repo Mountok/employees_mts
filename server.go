@@ -3,7 +3,7 @@ package restapi
 import (
 	"context"
 	"net/http"
-	// "os"
+	"os"
 	"time"
 
 	"github.com/gorilla/handlers"
@@ -24,8 +24,8 @@ func (s *Server) Run(handler http.Handler) error {
 
 
 	s.httpServer = &http.Server{
-		Addr: ":" + "8080",
-		// Addr: ":" + os.Getenv("PORT"),
+		// Addr: ":" + "8080",
+		Addr: ":" + os.Getenv("PORT"),
 		Handler: corsHandler(handler),
 		MaxHeaderBytes: 1 << 20,
 		ReadTimeout:    10 * time.Second,
