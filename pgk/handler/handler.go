@@ -22,11 +22,12 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
 	config := cors.DefaultConfig()
-    config.AllowAllOrigins = true
+    config.AllowOrigins = []string{"*"}
     config.AllowMethods = []string{"POST", "GET", "PUT", "OPTIONS"}
     config.AllowHeaders = []string{"Origin", "Content-Type", "Authorization", "Accept", "User-Agent", "Cache-Control", "Pragma"}
     config.ExposeHeaders = []string{"Content-Length"}
     config.AllowCredentials = true
+	config.ExposeHeaders = []string{}
     config.MaxAge = 12 * time.Hour
 
     router.Use(cors.New(config))
@@ -40,6 +41,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		api.GET("/employer", h.CreateEmployer)
 		api.POST("/employers", h.ReadEmployer)
+		// api.OPTIONS("/employers", h.ReadEmployer)
 		api.PUT("/employers", h.UpadateEmployer)
 		api.DELETE("/employers", h.DeleteEmployer)
 		api.GET("/filters", h.ReadAllFiltersDate)
