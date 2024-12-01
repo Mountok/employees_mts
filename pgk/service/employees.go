@@ -16,6 +16,13 @@ func NewEmployeesService(repo repository.Employees) *EmployeesService {
 	}
 }
 
+
+func (s *EmployeesService) ReadEmployers() ([][]models.EmployersResponse, error) {
+	
+	return s.repo.ReadEmployers()
+}
+
+
 func (s *EmployeesService) ReadEmployer(input models.Employers) ([]models.EmployersResponse, error) {
 	return s.repo.ReadEmployer(models.EmployersResponse{
 		Id:            input.Id,
@@ -31,3 +38,4 @@ func (s *EmployeesService) ReadEmployer(input models.Employers) ([]models.Employ
 		SubDivisionId: input.SubDivisionId,
 	})
 }
+ 

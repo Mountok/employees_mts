@@ -12,6 +12,7 @@ type Authorization interface {
 
 type Employees interface {
 	ReadEmployer(models.EmployersResponse) ([]models.EmployersResponse,error)
+	ReadEmployers() ([][]models.EmployersResponse, error)
 }
 
 type Filters interface {

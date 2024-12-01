@@ -19,6 +19,22 @@ func NewEmployeesPostgres(db *sqlx.DB) *EmployeesPostgres {
 	}
 }
 
+func (db *EmployeesPostgres) ReadEmployers() ([][]models.EmployersResponse, error) {
+
+	var idxs []int
+
+	query := "SELECT DISTINCT emp.parent_id FROM main.employees emp WHERE parent_id IS NOT NULL ORDER BY parent_id"
+
+	db.db.Select(&idxs,query)
+
+	fmt.Println(idxs)
+
+	return [][]models.EmployersResponse{}, nil
+
+
+}
+ 
+
 func (db *EmployeesPostgres) ReadEmployer(input models.EmployersResponse) ([]models.EmployersResponse, error) {
 	var output []models.Employers
 	var outputArray []models.EmployersResponse

@@ -19,18 +19,13 @@ func (s *Server) Run(handler http.Handler) error {
 		Addr: ":" + os.Getenv("PORT"),
 		Handler: handlers.CORS(
 			handlers.AllowedOrigins([]string{
-				"*",
+				"Origin",
 			}),
 			handlers.AllowedMethods([]string{
-				"POST",
-				"GET",
-				"UPDATE",
-				"DELETE",
+				"*",
 			}),
 			handlers.AllowedHeaders([]string{
-				"Accept", 
-     "Content-Type","Content-Length", "Accept-Encoding","X-CSRF-Token", 
-     "Authorization","Auth",
+				"*",
 			}),
 			handlers.AllowCredentials(),
 		)(handler),
