@@ -76,22 +76,22 @@ func (db *EmployeesPostgres) ReadEmployer(input models.EmployersResponse) ([]mod
 		queryString += fmt.Sprint(" and LOWER(emp.full_name) LIKE LOWER('%" + input.FullName + "%')")
 	}
 	if input.DepartmentId != "" {
-		queryString += fmt.Sprintf(" and emp.departments_id = %s", input.DepartmentId)
+		queryString += fmt.Sprintf(" , emp.departments_id = %s", input.DepartmentId)
 	}
 	if input.JobId != "" {
-		queryString += fmt.Sprintf(" and emp.job_title_id = %s", input.JobId)
+		queryString += fmt.Sprintf(" , emp.job_title_id = %s", input.JobId)
 	}
 	if input.RoleId != "" {
-		queryString += fmt.Sprintf(" and emp.role_id = %s", input.RoleId)
+		queryString += fmt.Sprintf(" , emp.role_id = %s", input.RoleId)
 	}
 	if input.BlockId != "" {
-		queryString += fmt.Sprintf(" and emp.block_id = %s", input.BlockId)
+		queryString += fmt.Sprintf(" , emp.block_id = %s", input.BlockId)
 	}
 	if input.SubDivisionId != "" {
-		queryString += fmt.Sprintf(" and emp.subdivision_id = %s", input.SubDivisionId)
+		queryString += fmt.Sprintf(" , emp.subdivision_id = %s", input.SubDivisionId)
 	}
 	if input.Office != "" {
-		queryString += fmt.Sprintf(" and emp.office_id = %s", input.Office)
+		queryString += fmt.Sprintf(" , emp.office_id = %s", input.Office)
 	}
 
 	logrus.Printf(queryString)
