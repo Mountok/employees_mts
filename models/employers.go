@@ -10,7 +10,7 @@ type EmployersResponse struct {
 	RoleId        string              `json:"role_name" db:"role_name"`
 	ParentId      int                 `json:"parent_id" db:"parent_id"`
 	DepartmentId  string              `json:"department_name" db:"department_name"`
-	BlockId       string              `json:"block_name db:"block_name"`
+	BlockId       string              `json:"block_name" db:"block_name"`
 	SubDivisionId string              `json:"subdivision_name" db:"subdivision_name"`
 	Office        string              `json:"office_name" db:"office_name"`
 	Children      []EmployersResponse `json:"children"`
