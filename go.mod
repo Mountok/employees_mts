@@ -4,7 +4,10 @@ go 1.23.3
 
 require github.com/lib/pq v1.10.9
 
-require github.com/felixge/httpsnoop v1.0.4 // indirect
+require (
+	github.com/felixge/httpsnoop v1.0.4 // indirect
+	github.com/gin-contrib/cors v1.7.2 // indirect
+)
 
 require (
 	github.com/bytedance/sonic v1.12.5 // indirect

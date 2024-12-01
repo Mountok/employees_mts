@@ -6,7 +6,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/gorilla/handlers"
 )
 
 type Server struct {
@@ -14,19 +13,19 @@ type Server struct {
 }
 
 func (s *Server) Run(handler http.Handler) error {
-	corsHandler := handlers.CORS(
-		handlers.AllowedOrigins([]string{"*"}),
-		handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"}),
-		handlers.AllowedHeaders([]string{"*"}),
-		handlers.AllowCredentials(),
-	)
+	// corsHandler := handlers.CORS(
+	// 	handlers.AllowedOrigins([]string{"*"}),
+	// 	handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"}),
+	// 	handlers.AllowedHeaders([]string{"*"}),
+	// 	handlers.AllowCredentials(),
+	// )
 
 
 
 	s.httpServer = &http.Server{
 		// Addr: ":" + "8080",
 		Addr: ":" + os.Getenv("PORT"),
-		Handler: corsHandler(handler),
+		Handler: handler,
 		MaxHeaderBytes: 1 << 20,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
