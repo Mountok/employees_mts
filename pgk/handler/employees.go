@@ -10,11 +10,12 @@ import (
 func (h *Handler) CreateEmployer(c *gin.Context) {}
 
 func (h *Handler) ReadEmployers(c *gin.Context) {
-	var input [][]models.EmployersResponse
 
-	h.service.Employees.ReadEmployers()
-
-	c.JSON(http.StatusOK,input)
+	output, err := h.service.Employees.ReadEmployers()
+	if err != nil {
+		newErrorResponse(c,http.StatusBadRequest,err.Error())
+	}
+	c.JSON(http.StatusOK,output)
 	
 }
 

@@ -39,7 +39,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	}
 	api := router.Group("/api")
 	{
-		api.GET("/employer", h.CreateEmployer)
+		api.GET("/employer", h.ReadEmployers)
 		api.POST("/employers", h.ReadEmployer)
 		// api.OPTIONS("/employers", h.ReadEmployer)
 		api.PUT("/employers", h.UpadateEmployer)
