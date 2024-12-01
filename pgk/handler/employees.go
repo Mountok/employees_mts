@@ -32,6 +32,7 @@ func (h *Handler) ReadEmployer(c *gin.Context) {
 		return
 	}
 
+	c.Header("Access-Control-Allow-Origin", "*")
 	c.JSON(http.StatusOK,map[string]interface{}{
 		"data": result,
 	})
