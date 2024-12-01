@@ -18,16 +18,9 @@ func (s *Server) Run(handler http.Handler) error {
 		// Addr: ":" + "8080",
 		Addr: ":" + os.Getenv("PORT"),
 		Handler: handlers.CORS(
-			handlers.AllowedOrigins([]string{
-				"*",
-			}),
-			handlers.AllowedMethods([]string{
-				"GET",
-				"POST",
-			}),
-			handlers.AllowedHeaders([]string{
-				"*",
-			}),
+			handlers.AllowedOrigins([]string{"*"}),
+			handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"}), // Добавьте OPTIONS
+			handlers.AllowedHeaders([]string{"*"}),
 			handlers.AllowCredentials(),
 		)(handler),
 		MaxHeaderBytes: 1 << 20,
